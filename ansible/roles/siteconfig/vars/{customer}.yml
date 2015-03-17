@@ -1,0 +1,103 @@
+# Copyright 2015 47Lining LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+
+#
+# configuration for customer {{add customer name}}
+#
+
+# customer_domain is used for external routing to each of the cages
+# configured for this customer, e.g. "nucleator-ui.build.somedomain.com"
+
+customer_domain: "somedomain.com" # TODO update domain name to match
+                                  # domain used for this customer's Cages
+
+# A Cage is a set of managed AWS infrastructure that exists for a particular purpose.
+# Cages can be maintained across one or more customer-specific AWS Accounts.
+
+# TODO: modify cage names for this customer.  Consider starting with just build.
+cage_names:
+
+  # The AWS Acccount that hosts the build cage acts
+  # as the source account in cross-account builds
+  build:
+    account: test1
+    region: us-west-2
+    owner: exampleUser
+  ci:
+    account: test1
+    region: us-west-2
+    owner: exampleUser
+  stage:
+    account: test2
+    region: us-west-2
+    owner: exampleRole
+  prod:
+    account: test2
+    region: us-west-2
+    owner: exampleRole
+
+aws_accounts:
+
+  # TODO: add an account specification block for each AWS Account for this customer
+
+  test1: # TODO: update the human-readable "Friendly Name" of this Account.
+
+    account_number: 123456789012 # TODO: enter Account Number for this AWS Account
+
+    bootstrap_region: us-west-2 # TODO: select region to use for Account-level resources supporting best practices (e.g. detailed billing)
+
+    map_region_plus_redundant_zone_number_to_vpc_valid_az:
+      # TODO: update AZ1 and AZ2 for each region to match the first two AZ's
+      # capable of hosting VPC subnets in the new account.  This allows
+      # Nucleator to create redundant subnets and subnet groups for
+      # high-availability deployment topologies.  Note that the specific AZ's
+      # available for use within VPCs may vary by Account and Region, especially
+      # for Regions where AWS has a strong pre-VPC footprint like us-east-1.
+      # Do not assume that the available AZs will be the same as for previous
+      # Accounts.
+      us-west-2:
+        AZ1: us-west-2a
+        AZ2: us-west-2b
+      us-east-1:
+        AZ1: us-east-1a
+        AZ2: us-east-1c
+      eu-west-1:
+        AZ1: eu-west-1a
+        AZ2: eu-west-1b
+
+  test2: # TODO: update the human-readable "Friendly Name" of this Account.
+
+    account_number: 987654321021 # TODO: enter Account Number for this AWS Account
+
+    bootstrap_region: us-west-2 # TODO: select region to use for Account-level resources supporting best practices (e.g. detailed billing)
+
+    map_region_plus_redundant_zone_number_to_vpc_valid_az:
+      # TODO: update AZ1 and AZ2 for each region to match the first two AZ's
+      # capable of hosting VPC subnets in the new account.  This allows
+      # Nucleator to create redundant subnets and subnet groups for
+      # high-availability deployment topologies.  Note that the specific AZ's
+      # available for use within VPCs may vary by Account and Region, especially
+      # for Regions where AWS has a strong pre-VPC footprint like us-east-1.
+      # Do not assume that the available AZs will be the same as for previous
+      # Accounts.
+      us-west-2:
+        AZ1: us-west-2b
+        AZ2: us-west-2c
+      us-east-1:
+        AZ1: us-east-1b
+        AZ2: us-east-1c
+      eu-west-1:
+        AZ1: eu-west-1a
+        AZ2: eu-west-1c
