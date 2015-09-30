@@ -17,7 +17,7 @@
 # configuration for customer example.com
 #
 
-customer_domain: "example.com"
+customer_domain: "example.yourdomain.com"
 
 # a cage is a set of managed AWS infrastructure that exists for a particular purpose
 

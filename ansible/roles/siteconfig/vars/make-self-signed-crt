@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+die () {
+    echo -e >&2 "$@"
+    exit 1
+}
+
+scriptname=`basename "$0"`
+
+[ "$#" -eq 3 ] || die "usage: ${scriptname} <customer> <cage> <customer-domain>\n3 arguments required,  $# provided"
+
+customer=$1
+cage=$2
+customer_domain=$3
+
+prefix=${cage}.${customer_domain}
+out=${customer}-${cage}
+
+echo -e "\nGenerating private key for certificate generation..."
+openssl genrsa -out ${out}.key 4096
+
+echo -e "\nGenerating certificate signing request..."
+openssl req -new -out ${out}.csr -key ${out}.key <<EOF
+.
+.
+.
+.
+.
+*.${prefix}
+.
+.
+.
+EOF
+
+echo -e "\n\nValidating common name for certificate signing request..."
+openssl req -in ${out}.csr -noout -text | grep 'CN\='
+
+echo -e "\nGenerating certificate..."
+openssl x509 -req -days 3650 -in ${out}.csr -signkey ${out}.key -out ${out}.crt
+
+echo -e "\nValidating Common Name for generated certificate:"
+openssl x509 -in ${out}.crt -text -noout | grep 'CN\='
