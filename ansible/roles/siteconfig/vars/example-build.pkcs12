@@ -1,0 +1,41 @@
+PKCS12 Certificate Bundle for build.example.yourdomain.com
+
+You will need to replace this file's contents with a pkcs12-format
+Certificate Bundle. Stacksets that require SSL Certificates will look for them in this directory.
+
+The convention for filenames for SSL Certificate Bundles is:
+
+    {customer}-{cage}.pkcs12
+
+You can procure an SSL Certificate from a Certificate Authority (CA) of your
+choice, in which case the Certificate will be signed by your chosen CA.
+
+Alternatively, you can act as your own Certificate Authority and, and create
+a Self-Signed Certificate.
+
+If you wish to create a self-signed certificate, you can do so using the
+make-certificate-bundle script.  The script can be found in the same directory
+as this file.  It's usage is:
+
+    make-certificate-bundle <customer> <cage> <customer-domain> <password>
+
+For example:
+
+    make-certificate-bundle example build example.yourdomain.com Arb1trary!
+
+To ensure that downstream nucleator stacksets will be able to access
+the certficate bundle that you are providing, be sure the password you
+use here matches the password value entered for pkcs12_bundle_password
+in the corresponding customer credentials file at
+~/.nucleator/<customer>-credentials.yml.
+
+This will generate a wildcard certificate for
+*.build.example.yourdomain.com in the file example-build.crt.  The
+generated server key and certificate signing request will also be
+available in the files example-build.key and example-build.csr.
+
+make-certificate-bundle also creates a pkcs12-format bundle including
+the X509 certificate, its corresponding private key, and - if
+applicable - a certificate bundle (ca.crt) establishing chain-of-trust
+made available from your Certificate Authority.  The pkcs12 bundle is
+suitable for import into a java keystore.
