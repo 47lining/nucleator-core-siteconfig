@@ -23,6 +23,9 @@
 - name: Include customer-specific vars
   include_vars: "{{ customer_name }}.yml"
 
+- name: Include user vars
+  include_vars: "users.yml"
+
 # TODO - Usability enhancement - test for existence of the target "{{ customer_name }}.yml" file.
 #        if it does not exist, print a graceful / helpful error message including
 #        what needs to be placed in the missing file and where to put it.
